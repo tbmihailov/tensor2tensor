@@ -42,7 +42,7 @@ from tensor2tensor.data_generators import text_encoder
 from tensor2tensor.data_generators import text_problems
 from tensor2tensor.layers import modalities
 from tensor2tensor.utils import registry
-
+import logging
 import tensorflow as tf
 
 
@@ -304,12 +304,17 @@ class LambadaRc(text_problems.Text2ClassProblem):
       """
       for filepath in files:
         with tf.gfile.GFile(filepath, "r") as f:
+          logging.info("Generating from {0}".format(filepath))
+          lines_cnt = 0
           for line in f:
+            lines_cnt += 1
             input_target = line.split()
             yield {
                 "inputs": " ".join(input_target[:-1]),
                 "label": input_target[-1]
             }
+
+          logging.info("{0} lines".format(lines_cnt))
 
     return _generate_samples()
 

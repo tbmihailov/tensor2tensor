@@ -19,6 +19,7 @@ from __future__ import division
 from __future__ import print_function
 
 import contextlib
+import logging
 import os
 import sys
 from tensor2tensor import models  # pylint: disable=unused-import
@@ -397,5 +398,14 @@ def main(argv):
 
 
 if __name__ == "__main__":
+  logFormatter = logging.Formatter('%(asctime)s [%(threadName)-12.12s]: %(levelname)s : %(message)s')
+  logger = logging.getLogger()
+  logger.setLevel(logging.DEBUG)
+
+  # Enable console logging
+  consoleHandler = logging.StreamHandler(sys.stdout)
+  consoleHandler.setFormatter(logFormatter)
+  logger.addHandler(consoleHandler)
+
   tf.logging.set_verbosity(tf.logging.INFO)
   tf.app.run()
